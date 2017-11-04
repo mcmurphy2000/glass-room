@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+
+	<div class="container">
+	
+		<h2><strong>Your pieces will fit into <span th:text="${binCount}" style="color: red;"></span> tray(s)</strong></h2>
+		
+		<div th:each="i : ${#numbers.sequence(1, binCount)}">
+			<hr style="width: 100%; height: 6px; background-color: #333;" />
+			
+			<h2 style="text-align: center;">
+				<img th:src="@{/image/logo3.gif}" style="width: 80px;" />
+				<span>Tray <span th:text="'#' + ${i}" style="color: red;"></span></span>
+			</h2>
+			
+			<img class="img-responsive"	th:src="@{'/binimage/' + ${i} + '.png'}" style="max-width: 90%; display: block; margin: auto;"/>
+		</div>
+		
+		<hr style="width: 100%; height: 6px; background-color: #333;" />
+		
+		
+		<h2 style="margin-top: 40px;">The pieces you have entered:</h2>
+		
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th class="firstColumn">#ID</th>
+					<th>Label</th>
+					<th>Width (mm)</th>
+					<th>Height (mm)</th>
+					<th>Quantity</th>
+					<th>Color</th>
+				</tr>
+			</thead>
+
+			<tbody th:object="${rectWrapper}">
+			    <tr th:each="rect : *{rectList}">
+			    	<td class="firstColumn" th:text="${rect.id}"></td>
+			    	<td th:text="${rect.label}"></td>
+					<td th:text="${rect.width}"></td>
+					<td th:text="${rect.height}"></td>
+					<td th:text="${rect.quantity}"></td>
+					<td><input type="color" th:value="${rect.color}" disabled="disabled" /></td>
+			    </tr>
+			</tbody>
+		</table>
+
+		<hr />
+		
+		<a class="btn btn-primary btn-lg" th:href="@{/}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+	</div>
+	<!-- /.container -->
+	
+	<div th:replace="common/header :: footer"/>
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

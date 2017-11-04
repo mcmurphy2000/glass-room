@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+
+	<div class="container" id="myContainer">
+	
+		<!-- flash box begin -->
+		<div th:if="${flashMessage}" th:classappend="${flashClass}" class="alert alert-dismissable fade in">
+    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    		<strong th:text="${flashMessage}"></strong>
+  		</div>
+  		<!-- flash box end -->
+  		
+		<span style="font-family: Impact, Charcoal, sans-serif; font-size: 300%;">TGR Layout Calculator</span>
+		
+		<h3>Enter the sizes:</h3>
+
+		
+		<form action="#" th:action="@{/showLayout}" th:object="${rectWrapper}" method="post">
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th class="firstColumn">#ID</th>
+						<th>Label</th>
+						<th>Width (mm)</th>
+						<th>Height (mm)</th>
+						<th>Quantity</th>
+						<th>Color</th>
+						<th></th>
+					</tr>
+				</thead>
+	
+				<tbody id="myTBody">
+				    <tr th:each="rect, stat : *{rectList}" class="myRow">
+				    	<td class="firstColumn">
+				    		<span th:text="${rect.getId()}"></span>
+				    		<input type="hidden" th:field="*{rectList[__${stat.index}__].id}" /> 
+				    	</td>
+				    	<td>
+				    		<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-font" aria-hidden="true"></i></span>
+								<input type="text" required="required" class="form-control" placeholder="Label" th:field="*{rectList[__${stat.index}__].label}" />
+							</div>
+						</td>
+						<td>
+							<div class="form-group" th:classappend="${#fields.hasErrors('rectList[__${stat.index}__].width')}? 'has-error'">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-arrows-h" aria-hidden="true"></i></span>
+									<input style="width: 80px;" type="number" required="required" class="form-control" placeholder="Width" th:field="*{rectList[__${stat.index}__].width}" />
+								</div>
+								<span th:if="${#fields.hasErrors('rectList[__${stat.index}__].width')}" th:errors="*{rectList[__${stat.index}__].width}" class="control-label"></span>
+							</div>
+						</td>
+						<td>
+							<div class="form-group" th:classappend="${#fields.hasErrors('rectList[__${stat.index}__].height')}? 'has-error'">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-arrows-v" aria-hidden="true"></i></span>
+									<input style="width: 80px;" type="number" required="required" class="form-control" placeholder="Height" th:field="*{rectList[__${stat.index}__].height}" />
+								</div>
+								<span th:if="${#fields.hasErrors('rectList[__${stat.index}__].height')}" th:errors="*{rectList[__${stat.index}__].height}" class="control-label"></span>
+							</div>
+						</td>
+						<td>
+							<div class="form-group" th:classappend="${#fields.hasErrors('rectList[__${stat.index}__].quantity')}? 'has-error'">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-calculator" aria-hidden="true"></i></span>
+									<input style="width: 80px;" type="number" required="required" class="form-control" placeholder="Quantity" th:field="*{rectList[__${stat.index}__].quantity}" />
+								</div>
+								<span th:if="${#fields.hasErrors('rectList[__${stat.index}__].quantity')}" th:errors="*{rectList[__${stat.index}__].quantity}" class="control-label"></span>
+							</div>
+						</td>
+						<td width="60">
+							<input type="color" th:field="*{rectList[__${stat.index}__].color}" />
+						</td>
+						<td width="90">
+							<button class="btn btn-danger btn-sm deleteRow" >
+						  		<span class="glyphicon glyphicon-remove-sign"></span> Delete
+							</button>
+						</td>
+				    </tr>
+				</tbody>
+			</table>
+
+			<button id="addRowButton" class="btn btn-success btn-sm">
+				<span class="glyphicon glyphicon-plus-sign"></span> Add piece 
+			</button>
+	
+			<hr />
+	
+			<button type="submit" class="btn btn-primary btn-lg">
+				<i class="fa fa-bolt" aria-hidden="true"></i> Calculate !
+			</button>
+	
+			<div class="divider"></div>
+
+			<button class="btn btn-danger btn-lg" id="deleteAll">
+				<span class="glyphicon glyphicon-remove-sign"></span> Delete All
+			</button>
+		</form>
+		<!-- form end -->		
+	</div>
+	<!-- /.container -->
+	
+	<div th:replace="common/header :: footer"/>
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

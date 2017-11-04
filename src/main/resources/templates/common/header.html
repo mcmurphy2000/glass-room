@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common-header">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Glass Room layout calculator</title>
+	
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	
+	<!-- font-awesome CSS -->
+	<link th:href="@{/webjars/font-awesome/4.7.0/css/font-awesome.min.css}" rel="stylesheet" />
+	
+	<!-- Custom styles for this template -->
+	<link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" />
+	
+	<!-- Custom page icon -->
+	<link rel="icon" th:href="@{/image/library.png}" href="/image/library.png" />
+</head>
+
+
+<body>
+
+	<!-- Header -->
+	<div th:fragment="navbar">
+		<div class="page-top" style="width: 100%; height: 10px; background-color: #f48342;"></div>
+		<!-- Static navbar -->
+		<nav class="navbar navbar-inverse">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<img class="img-responsive"	th:src="@{/image/logo-edit.png}" style="width: 120px; display: inline-block;" />
+					</a>
+							
+				</div>
+				<ul class="nav navbar-nav">
+					<li>
+						<a th:href="@{/}">
+							<i class="fa fa-info-circle" aria-hidden="true"></i> This software is created for Dorothy Ratcliff<br/>
+							from The Glass Room, Christchurch, New Zealand
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<a th:href="@{/settings/}" class="btn btn-primary navbar-btn"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<!-- Header -->
+
+	
+	<!-- Footer -->
+	<div th:fragment="footer" >
+		<br />
+		<br />
+
+		<footer>
+			<div class="container">
+				<div class="row" >
+	 				<div class="col-xs-4 footerleft"> 
+						<div class="logofooter">
+							<a th:href="@{/}"><img class="img-responsive"
+								th:src="@{/image/logo-edit.png}" style="width: 200px;" /></a>
+						</div>
+						<span style="font-family: Impact, Charcoal, sans-serif; font-size: 170%; color: #DAA520">TGR Layout Calculator</span>
+					</div>
+	 				<div class="col-xs-4 paddingtop-bottom"> 
+	 					<h6 class="heading7">Credits:</h6>
+						<ul class="post">
+							<p>
+								<i class="fa fa-github" aria-hidden="true"></i> This WebApp uses <a href="https://github.com/mses-bly/2D-Bin-Packing">2D-Bin-Packing</a> library <br /> made by Moises Baly
+							</p>
+						</ul>
+					</div>
+	 				<div class="col-xs-4 paddingtop-bottom"> 
+	 					<h6 class="heading7">About:</h6>
+						<ul class="post">
+							<p>
+								<i class="fa fa-info-circle" aria-hidden="true"></i> This software is created for Dorothy Ratcliff<br/>
+								from The Glass Room, Christchurch, New Zealand
+							</p>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+ 
+ 		<div class="copyright">
+	 		<div class="container">
+				<div class="col-md-6">
+					<p><i class="fa fa-id-card-o" aria-hidden="true"></i> 2017 - GNU General Public License by Stan</p>
+				</div>
+				<div class="col-md-6">
+					<ul class="bottom_ul">
+						<li><a th:href="@{/}">Home</a></li>
+						<li><a th:href="@{/settings/}">Settings</a></li>
+						<li><a href="https://www.github.com/">GitHub</a></li>
+						<li><a href="#">Site Map</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+ 	</div>
+	<!-- Footer -->
+	
+
+	<!-- bottom-scripts -->
+	<div th:fragment="body-bottom-scripts">
+		<script th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+		<!-- bootbox is used for JavaScript confirmation dialogs -->
+		<script th:src="@{/js/bootbox.min.js}"></script>
+		<script th:src="@{/js/scripts.js}"></script>
+	</div>
+
+</body>
+</html>

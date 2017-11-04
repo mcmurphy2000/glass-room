@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header" />
+
+<body>
+	<div th:replace="common/header :: navbar" />
+
+
+	<div class="container" id="myContainer">
+	
+		<!-- flash box begin -->
+		<div th:if="${flashMessage}" th:classappend="${flashClass}" class="alert alert-dismissable fade in">
+    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    		<strong th:text="${flashMessage}"></strong>
+  		</div>
+  		<!-- flash box end -->
+  		
+		<h1>Settings</h1>
+		
+		<h3>Enter dimensions of your bed:</h3>
+		<p>If you want some margin along the bed's edges, you may want to enter a bit smaller dimensions that those of your actual bed</p>
+		<p>Keep in mind that half of "Min distance" will still be added as a margin around each piece of glass</p>
+	
+		<hr />
+		
+		<form action="#" th:action="@{/saveSettings}" th:object="${formSettings}" method="post">
+			<div class="form-group" th:classappend="${#fields.hasErrors('width')}? 'has-error'">
+				<label for="width">Width (mm):</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-arrows-h" aria-hidden="true"></i></span>
+					<input type="number" required="required" class="form-control" placeholder="Width (mm)" th:field="*{width}" />
+				</div>
+				<span th:if="${#fields.hasErrors('width')}" th:errors="*{width}" class="control-label"></span>
+			</div>
+
+			<div class="form-group" th:classappend="${#fields.hasErrors('height')}? 'has-error'">
+				<label for="height">Height (mm):</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-arrows-v" aria-hidden="true"></i></span>
+					<input type="number" required="required" class="form-control" placeholder="Height (mm)" th:field="*{height}" />
+				</div>
+				<span th:if="${#fields.hasErrors('height')}" th:errors="*{height}" class="control-label"></span>
+			</div>
+			
+			<hr />
+			
+			<div class="form-group" th:classappend="${#fields.hasErrors('minDistance')}? 'has-error'">
+				<label for="minDistance">Min distance between pieces (mm):</label>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-arrows-alt" aria-hidden="true"></i></span>
+					<input type="number" required="required" class="form-control" placeholder="Min Distance (mm)" th:field="*{minDistance}" />
+				</div>
+				<span th:if="${#fields.hasErrors('minDistance')}" th:errors="*{minDistance}" class="control-label"></span>
+			</div>
+			
+			<hr />
+	
+			<button type="submit" class="btn btn-primary btn-lg">
+				<i class="fa fa-check"></i> Save settings
+			</button>
+			
+			<div class="divider"></div>
+
+			<a th:href="@{/}" class="btn btn-warning btn-lg">
+				<i class="fa fa-times" aria-hidden="true"></i> Cancel
+			</a>
+		</form>
+		<!-- form end -->	
+			
+	</div>
+	<!-- /.container -->
+	
+	<div th:replace="common/header :: footer"/>
+	<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>
