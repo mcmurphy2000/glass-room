@@ -182,7 +182,7 @@ public class MainController {
 	public String deleteAll(SessionStatus status) {
 		rectService.deleteAll();
 		status.setComplete();	// this will cause rectWrapper() method to be called again on next request and will update "rectWrapperSession"
-		return "redirect:/";
+		return "redirect:/";	// redirect won't have any effect because it's JavaScript who is posting here
 	}
 
 	
