@@ -26,11 +26,9 @@ public class Rect {
 	@Column(nullable=false)
 	private String color;
 	
-	// TODO remove this constructor
 	public Rect() {
 	}
 	
-	// TODO remove this constructor
 	public Rect(Integer id, String label, Integer width, Integer height, Integer quantity, String color) {
 		this.id = id;
 		this.label = label;

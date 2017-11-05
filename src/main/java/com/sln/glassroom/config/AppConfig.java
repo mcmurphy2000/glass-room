@@ -28,8 +28,8 @@ public class AppConfig {
 	@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public SettingsWrapper getSettingsWrapper() {
 		final int ID = 1;
-		final int DEFAULT_WIDTH = 1500;
-		final int DEFAULT_HEIGHT = 3000;
+		final int DEFAULT_WIDTH = 2500;
+		final int DEFAULT_HEIGHT = 3600;
 		final int MIN_DISTANCE = 50;
 		
 		Settings settings = settingsService.findOne(ID);

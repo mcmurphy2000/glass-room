@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -29,12 +30,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sln.glassroom.binpacking.BinContainer;
+import com.sln.glassroom.binpacking.BinContainerImpl;
 import com.sln.glassroom.domain.Rect;
 import com.sln.glassroom.domain.Settings;
-import com.sln.glassroom.service.BinContainer;
-import com.sln.glassroom.service.BinContainerImpl;
 import com.sln.glassroom.service.RectService;
 import com.sln.glassroom.service.SettingsService;
 import com.sln.glassroom.service.SettingsWrapper;
@@ -47,6 +49,13 @@ import com.sln.glassroom.view.RectWrapper;
 public class MainController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MainController.class);
+	
+	private static final Integer DEFAULT_ID = 1;
+	private static final String DEFAULT_LABEL = "P1";
+	private static final Integer DEFAULT_WIDTH = null;
+	private static final Integer DEFAULT_HEIGHT = null;
+	private static final Integer DEFAULT_QUANTITY = 1;
+	private static final String DEFAULT_COLOR = "#1D7D85";
 	
 	@Autowired
 	RectWrapperValidator rectWrapperValidator;
@@ -65,6 +74,17 @@ public class MainController {
 		binder.addValidators(rectWrapperValidator);
 	}
 	
+	// util method to extract client IP address
+	private static String getClientIp(HttpServletRequest request) {
+		String remoteAddr = "";
+		if (request != null) {
+            remoteAddr = request.getHeader("X-FORWARDED-FOR");
+            if (remoteAddr == null || "".equals(remoteAddr))
+                remoteAddr = request.getRemoteAddr();
+        }
+        return remoteAddr;
+	}
+	
 	// case scenario when this attribute is specified @SessionAttributes("rectWrapper") on a Controller class 
 	// if the attribute is not in the session yet, this will be called and will add it to session
 	// but once it is in the session, this will not be called anymore and will not overwrite it
@@ -76,7 +96,7 @@ public class MainController {
 		List<Rect> rectList = rectService.findAll();
 		// if it contains 0 rows, then add 1 empty row because form needs it
 		if (rectList.size() == 0)
-			rectList.add(new Rect(1, "P1", null, null, 1, "#1D7D85"));
+			rectList.add(new Rect(DEFAULT_ID, DEFAULT_LABEL, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_QUANTITY, DEFAULT_COLOR));
 		
 		RectWrapper rectWrapper = new RectWrapper();
 		rectWrapper.setRectList(rectList);
@@ -97,7 +117,7 @@ public class MainController {
 	// with data from form, thus leaving possibly deleted rows intact
 	// Generally, it seems like a bad idea to have a form backing object bind to already existing attribute
 	@RequestMapping(value="/showLayout", method=RequestMethod.POST)
-	public String showLayout(@ModelAttribute("rectWrapper") @Valid RectWrapper rectWrapper, BindingResult result, ModelMap model, HttpSession session) {
+	public String showLayout(@ModelAttribute("rectWrapper") @Valid RectWrapper rectWrapper, BindingResult result, ModelMap model, HttpSession session, HttpServletRequest request) {
 		// if some rows were removed in form using JavaScript, corresponding entries will still be present
 		// in the list here. They will just be empty (isNew() = true)
 		// That's why those rows are removed (filtered out) in the RectWrapperValidator
@@ -117,8 +137,7 @@ public class MainController {
 		}
 		
 		List<Rect> rectList = rectWrapper.getRectList();
-		rectService.deleteAll();
-		rectService.saveAll(rectList);
+		rectService.saveAll(rectList, getClientIp(request));
 		
 		// this is probably a bad design as I have to new the object myself
 		// but I use it for the sake of demonstration of storing object into HttpSession
@@ -135,7 +154,7 @@ public class MainController {
 	
 	@RequestMapping("/settings/")
 	public String settings(Model model) {
-		// TODO use dozer here?
+		// maybe use dozer here?
 		FormSettings formSettings = new FormSettings();
 		settingsService.assignFromSettings(formSettings, settingsWrapper.getSettings());
 		model.addAttribute("formSettings", formSettings);
@@ -158,6 +177,14 @@ public class MainController {
 		redirectAttributes.addFlashAttribute("flashMessage", "Your settings have been saved");	// flash box
 		return "redirect:/";
 	}
+	
+	@RequestMapping(value="/deleteAll", method=RequestMethod.POST)
+	public String deleteAll(SessionStatus status) {
+		rectService.deleteAll();
+		status.setComplete();	// this will cause rectWrapper() method to be called again on next request and will update "rectWrapperSession"
+		return "redirect:/";
+	}
+
 	
 	// Returning Image/Media Data with Spring MVC
 	// see: http://www.baeldung.com/spring-mvc-image-media-data

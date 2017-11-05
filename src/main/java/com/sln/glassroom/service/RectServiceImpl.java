@@ -2,6 +2,8 @@ package com.sln.glassroom.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,17 @@ public class RectServiceImpl implements RectService {
 	}
 	
 	@Override
-	public void saveAll(List<Rect> rectList) {
+	@Transactional
+	public void saveAll(List<Rect> rectList, String clientIp) {
+		rectRepository.deleteAllEntries();
 		rectRepository.save(rectList);
 	}
 	
 	@Override
+	@Transactional
 	public void deleteAll() {
-		rectRepository.deleteAll();
+		//rectRepository.deleteAll();
+		rectRepository.deleteAllEntries();	// CrudRepository has deleteAll() but using this to speed up
 	}
 
 }

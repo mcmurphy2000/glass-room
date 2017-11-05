@@ -71,6 +71,14 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		
+		<!-- Installed in local repo -->
+		<dependency>
+			<groupId>org.packing</groupId>
+			<artifactId>2d-bin-packing</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

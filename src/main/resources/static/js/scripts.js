@@ -96,15 +96,11 @@ $(document).ready(function(){
 	$('#deleteAll').click(function(e) {
 		e.preventDefault();
 		/*<![CDATA[*/
-	    var path = /*[[@{/}]]*/'/admin/remove';
+	    var path = /*[[@{/}]]*/'/deleteAll';
 	    /*]]>*/
 		
-		var id=$(this).attr('id');
-		
-		console.log(path);
-		
 		bootbox.confirm({
-			message: "Are you sure to remove this book? It can't be undone.",
+			message: "Are you sure to remove all pieces?",
 			buttons: {
 				confirm: {
 					label:'<i class="fa fa-check"></i> Confirm'
@@ -114,8 +110,8 @@ $(document).ready(function(){
 				}
 			},
 			callback: function(confirmed) {
-				if(confirmed) {
-					$.post(path, {'id':id}, function(res) {
+				if (confirmed) {
+					$.post(path, function(res) {
 						location.reload();
 					});
 				}

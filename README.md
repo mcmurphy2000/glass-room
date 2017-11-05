@@ -20,3 +20,7 @@ rectWrapper is a request scoped model attribute
 	on every post from a form, showLayout() accepts this backing object "rectWrapper" back, modifies it and puts it as "rectWrapperSession"     
 settings is session scoped bean managed by Spring
 BinContainer is an attribute stored in HttpSession using traditional way
+
+1. Cloned 2D-Bin-Packing
+2. Deleted all files in 2D-Bin-Packing\src\main\resources to save space
+3. Installed to local maven repo: `mvn clean install`

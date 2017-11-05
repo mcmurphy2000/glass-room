@@ -1,4 +1,4 @@
-package com.sln.glassroom.service;
+package com.sln.glassroom.binpacking;
 
 import java.awt.image.BufferedImage;
 

@@ -16,6 +16,8 @@ import com.sln.glassroom.view.RectWrapper;
 @Component
 public class RectWrapperValidator implements Validator {
 	
+	private static final int MAX_QUANTITY = 50;
+	
 	@Autowired
 	SettingsWrapper settingsWrapper;
 	
@@ -38,17 +40,33 @@ public class RectWrapperValidator implements Validator {
 		List<Rect> rects = rectWrapper.getRectList();  
 		for (int i = 0; i < rects.size(); i++) { 
 			Rect r = rects.get(i);
-
-			if (r.getQuantity() < 1 || r.getQuantity() > 50)   
-				errors.rejectValue("rectList[" + i + "].quantity", "RectWrapper.quantity");  
-			if (r.getWidth() < 1 || r.getWidth() > (settings.getBedWidth() - settings.getMinDistanceBetweenPieces()))   
-				errors.rejectValue("rectList[" + i + "].width", "RectWrapper.width");  
-			if (r.getHeight() < 1 || r.getHeight() > (settings.getBedHeight() - settings.getMinDistanceBetweenPieces()))   
-				errors.rejectValue("rectList[" + i + "].height", "RectWrapper.height");  
-			if (r.getWidth() * r.getHeight() > (settings.getBedWidth() - settings.getMinDistanceBetweenPieces()) * (settings.getBedHeight() - settings.getMinDistanceBetweenPieces())) { 
-				errors.rejectValue("rectList[" + i + "].width", "RectWrapper.area");
-				errors.rejectValue("rectList[" + i + "].height", "RectWrapper.area");
+			
+			int binBiggerSide = Math.max(settings.getBedWidth(), settings.getBedHeight());
+			int binSmallerSide = Math.min(settings.getBedWidth(), settings.getBedHeight());
+			int rectBiggerSide, rectSmallerSide;
+			String biggerField, smallerField; 
+			if (r.getWidth() < r.getHeight()) {
+				rectBiggerSide = r.getHeight() + settings.getMinDistanceBetweenPieces();
+				rectSmallerSide = r.getWidth() + settings.getMinDistanceBetweenPieces();
+				biggerField = "rectList[" + i + "].height";
+				smallerField = "rectList[" + i + "].width";
+			} else {
+				rectBiggerSide = r.getWidth() + settings.getMinDistanceBetweenPieces();
+				rectSmallerSide = r.getHeight() + settings.getMinDistanceBetweenPieces();
+				biggerField = "rectList[" + i + "].width";
+				smallerField = "rectList[" + i + "].height";
 			}
+			
+			if (rectBiggerSide > binBiggerSide)   
+				errors.rejectValue(biggerField, "RectWrapper.WillNotFit");
+			if (rectSmallerSide > binSmallerSide)   
+				errors.rejectValue(smallerField, "RectWrapper.WillNotFit");  
+			if (r.getQuantity() < 1 || r.getQuantity() > MAX_QUANTITY)   
+				errors.rejectValue("rectList[" + i + "].quantity", "RectWrapper.quantity");
+			if (r.getWidth() < 1)   
+				errors.rejectValue("rectList[" + i + "].width", "RectWrapper.MinWidth");  
+			if (r.getHeight() < 1)   
+				errors.rejectValue("rectList[" + i + "].height", "RectWrapper.MinHeight");
 		}  
 	}
 

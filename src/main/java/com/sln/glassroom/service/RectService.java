@@ -8,7 +8,7 @@ public interface RectService {
 	
 	List<Rect> findAll();
 	
-	void saveAll(List<Rect> rectList);
+	void saveAll(List<Rect> rectList, String clientIp);
 	
 	void deleteAll();
 
