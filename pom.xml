@@ -83,11 +83,33 @@
 
 	<build>
 		<plugins>
-			<!-- Package as an executable jar/war -->
+
+			<!-- Include spring-boot-maven-plugin if you want to make an executable jar[FAT JAR which 
+                 includes all dependencies along with sprinboot loader] that you can run on 
+                 commandline using java -jar NAME -->
+            <!-- If you are not including it, result would be just a regular jar.
+                 You could run the project using mvn spring-boot:run [on project root directory]-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- Heroku Maven plugin -->
+			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<configuration>
+					<appName>glass-room</appName>
+					<!-- you can either create file Procfile in project root and place this 
+						line into it: web: java $JAVA_OPTS ..... OR use the tag below. It seems that 
+						this tag takes preference over Procfile if both are present -->
+					<processTypes>
+						<web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/glassroom-0.0.1-SNAPSHOT.jar</web>
+					</processTypes>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 
