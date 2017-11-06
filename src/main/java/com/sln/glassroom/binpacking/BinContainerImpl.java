@@ -110,7 +110,7 @@ public class BinContainerImpl implements BinContainer {
         Rectangle2D r = mArea.getBounds2D();
         
         // Need to scale down the rect because it contains margin
-        double newX = r.getX() + margin;	// determine left upper coords of new scaled-down rectangle will be  
+        double newX = r.getX() + margin;	// determine left upper coords of where the new scaled-down rectangle will be  
         double newY = r.getY() + margin;	// this will be the coords of final position
         double newWidth = r.getWidth() - 2 * margin;	// the width of rect without margin
         double newHeight = r.getHeight() - 2 * margin;	// the height of rect without margin

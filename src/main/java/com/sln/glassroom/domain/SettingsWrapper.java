@@ -1,6 +1,4 @@
-package com.sln.glassroom.service;
-
-import com.sln.glassroom.domain.Settings;
+package com.sln.glassroom.domain;
 
 public class SettingsWrapper {
 	private Settings settings;

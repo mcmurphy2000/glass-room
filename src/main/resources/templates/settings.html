@@ -52,8 +52,8 @@
 				</div>
 				<span th:if="${#fields.hasErrors('minDistance')}" th:errors="*{minDistance}" class="control-label"></span>
 				<p style="color: #828282">
-					Pieces will be positioned to have at least this distance between each other<br />
-					This will affect how many pieces will fit on the bed<br />
+					This determines how close individual pieces of glass will be positioned to each other when calculating layout.<br />
+					This will also affect how many pieces will fit on the bed<br />
 					Also, half of this distance will be provisioned as a margin along the perimeter of the entire bed
 				</p>
 			</div>

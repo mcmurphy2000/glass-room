@@ -9,7 +9,7 @@ import org.springframework.validation.Validator;
 
 import com.sln.glassroom.domain.Rect;
 import com.sln.glassroom.domain.Settings;
-import com.sln.glassroom.service.SettingsWrapper;
+import com.sln.glassroom.domain.SettingsWrapper;
 import com.sln.glassroom.view.RectWrapper;
 
 //http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html#validation-mvc-configuring

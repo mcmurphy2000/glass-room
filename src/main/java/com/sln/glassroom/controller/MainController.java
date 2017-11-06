@@ -37,9 +37,9 @@ import com.sln.glassroom.binpacking.BinContainer;
 import com.sln.glassroom.binpacking.BinContainerImpl;
 import com.sln.glassroom.domain.Rect;
 import com.sln.glassroom.domain.Settings;
+import com.sln.glassroom.domain.SettingsWrapper;
 import com.sln.glassroom.service.RectService;
 import com.sln.glassroom.service.SettingsService;
-import com.sln.glassroom.service.SettingsWrapper;
 import com.sln.glassroom.validator.RectWrapperValidator;
 import com.sln.glassroom.view.FormSettings;
 import com.sln.glassroom.view.RectWrapper;
@@ -193,7 +193,7 @@ public class MainController {
 	@RequestMapping(value = "/binimage/{index}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImageAsResponseEntity(@SessionAttribute(value = "binContainer", required = false) BinContainer binContainer, @PathVariable("index") int index) {
 		// page will ask for index from 1 to binCount, but binContainer.getBinImage() is 0 based
-		if (binContainer == null || index < 1 || index > binContainer.getBinCount() || binContainer.getBinCount() < 1) {
+		if (binContainer == null || index < 1 || index > binContainer.getBinCount()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -202,9 +202,9 @@ public class MainController {
 		byte[] imageInByte = null;
 	    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			ImageIO.write( img, "png", baos );
-		    imageInByte = baos.toByteArray();
 		    //baos.flush();
-		    //baos.close();
+		    baos.close();
+		    imageInByte = baos.toByteArray();
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOG.debug(e.getMessage());

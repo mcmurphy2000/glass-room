@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.sln.glassroom.domain.Settings;
-import com.sln.glassroom.service.SettingsWrapper;
+import com.sln.glassroom.domain.SettingsWrapper;
 import com.sln.glassroom.service.SettingsService;
 
 @Configuration
@@ -17,13 +17,17 @@ public class AppConfig {
 	@Autowired
 	SettingsService settingsService;
 
-	// settingsWrapper bean will be loaded on each new session and will stay until session ends
-	// I'm using settingsWrapper instead of just settings because otherwise, when settings is @Autowired it's impossible to save it
-	// via settingsService.save(settings) (because it would be a proxy, not an entity)
-	//
-	// The proxyMode attribute is necessary because at the moment of the instantiation of the web application context, there is no active session.
-	// Spring will create a proxy to be injected as a dependency, and instantiate the target bean when it is needed in a request.
-	// see: http://www.baeldung.com/spring-bean-scopes
+	/**
+	 * SettingsWrapper bean will be loaded on each new session and will stay until session ends
+	 * I'm using SettingsWrapper instead of just Settings because otherwise, when Settings is @Autowired it's impossible to save it
+	 * via settingsService.save(settings) (because it would be a Spring proxy, not an entity)
+	 *
+	 * The proxyMode attribute is necessary because at the moment of the instantiation of the web application context, there is no active session.
+	 * Spring will create a proxy to be injected as a dependency, and instantiate the target bean when it is needed in a request.
+	 * @see <a href="http://www.baeldung.com/spring-bean-scopes">http://www.baeldung.com/spring-bean-scopes</a>
+	 * 
+	 * @return a bean that contains current settings entity
+	 */
 	@Bean
 	@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 	public SettingsWrapper getSettingsWrapper() {
