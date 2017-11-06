@@ -41,11 +41,13 @@ or
 + `rectWrapperSession` is a session scoped **model attribute**
 + `rectWrapper` is a request scoped model attribute
 	+ on every request method `index()` takes `rectWrapperSession` and puts it in a model as a form backing object `"rectWrapper"`
-	+ on every post from a form, `showLayout()` accepts this backing object `"rectWrapper"` back, modifies it and puts it as `"rectWrapperSession"`     
+	+ on every post from a form, `showLayout()` accepts this backing object `"rectWrapper"` back, modifies it and puts it as `"rectWrapperSession"`  
+	it takes `"rectWrapper"` instead of `"rectWrapperSession"` from the form because of the way I use JavaScript to modify rows of input in the form.  
+	If it was taking directly to `"rectWrapperSession"`, the rows deleted by JavaScript would still remain in `"rectWrapperSession"`
 + `settingsWrapper` is a session scoped **bean** managed by Spring. It is created in AppConfig class each time new session starts. 
 	+ SettingsWrapper bean will be loaded on each new session and will stay until session ends
-	+ I'm using SettingsWrapper instead of just Settings because otherwise, when Settings is @Autowired it's impossible to save it
-	+ via settingsService.save(settings) (because it would be a Spring proxy, not an entity)
+	+ I'm using SettingsWrapper instead of just Settings because otherwise, when Settings is @Autowired it's impossible to save it via
+	settingsService.save(settings) (because it would be a Spring proxy, not an entity)
 + `BinContainer` is an attribute stored in **HttpSession using traditional way**
 	+ method getImageAsResponseEntity() gets it using `@SessionAttribute` on a parameter
 
@@ -58,9 +60,9 @@ interface BinContainer {
 }
 ```
 
-+ Ccontroller
-	+ asks service to store List<Rect>
-	+ creates new BinContainer object from (List<Rect>, settings)
++ Controller
+	+ asks service to store `List<Rect>`
+	+ creates new BinContainer object from (`List<Rect>`, settings)
 	+ stores BinContainer into **HttpSession**
 	
 + ImageResource method getImageAsResponseEntity()
