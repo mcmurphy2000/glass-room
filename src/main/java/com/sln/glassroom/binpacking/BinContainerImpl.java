@@ -153,14 +153,29 @@ public class BinContainerImpl implements BinContainer {
 		//Font font = new Font("SansSerif", Font.PLAIN, 70);
 		// Get the FontMetrics
 	    FontMetrics metrics = g.getFontMetrics(font);
-	    // Determine the X coordinate for the text
-	    int x = rect.x + (rect.width - metrics.stringWidth(areaLabel)) / 2;
-	    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
-	    int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+	    int strWidth = metrics.stringWidth(areaLabel);
+	    int fontHeight = metrics.getHeight();
+	    int fontAscent = metrics.getAscent();
+	    
+	    int x, y;
+	    // we will rotate text if height of rect is 20% bigger than width and text does not fit into width
+	    if (!(1.2 * rect.width < rect.height && strWidth * 1.1 > rect.width)) {		// horizontal layout of rectangle
+		    // Determine the X coordinate for the text
+		    x = rect.x + (rect.width - strWidth) / 2;
+		    // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+		    y = rect.y + ((rect.height - fontHeight) / 2) + fontAscent;
+	    } else {							// vertical layout of rectangle
+		    x = rect.x + ((rect.width - fontHeight) / 2) + fontAscent; 
+		    y = rect.y + rect.height / 2 + strWidth / 2; 
+		    // Rotate the text -90 degrees
+		    AffineTransform atFont = new AffineTransform();
+		    atFont.rotate(Math.toRadians(-90), 0, 0);
+		    font = font.deriveFont(atFont);
+		}
 	    // Set the font
 	    g2d.setFont(font);
 	    // Draw the String
-	    g2d.setColor(Color.WHITE);
+	    g2d.setColor(Color.BLACK);
 	    g2d.drawString(areaLabel, x, y);
 	}
 

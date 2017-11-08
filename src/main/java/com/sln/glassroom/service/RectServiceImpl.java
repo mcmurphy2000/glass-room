@@ -42,7 +42,7 @@ public class RectServiceImpl implements RectService {
 	@Transactional
 	public void deleteAll() {
 		//rectRepository.deleteAll();
-		rectRepository.deleteAllEntries();	// CrudRepository has deleteAll() but using this to speed up
+		rectRepository.deleteAllEntries();	// CrudRepository has deleteAll() method, but using this to speed up
 	}
 	
 	private List<RectHistory> createHistoryList(List<Rect> rectList, String clientIp) {

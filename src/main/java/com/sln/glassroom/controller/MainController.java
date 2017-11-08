@@ -124,7 +124,7 @@ public class MainController {
 		// They are removed in Validator (and not here) because otherwise indexes in the list may get messed and will not match binding errors (if any)
 		// Modifying list in Validator seems like a bad design but that's because JavaScript modifies HTML
 		
-		// overwrite "rectWrapperSession" in the model with new list
+		// Put "rectWrapperSession" into model again (overwriting the one that is already there with a new list)
 		// "rectWrapperSession" may now contain some erroneous fields
 		// so these erroneous fields will be available for the user until session ends,
 		// but they will not be saved to database
