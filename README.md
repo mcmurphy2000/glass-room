@@ -70,3 +70,17 @@ interface BinContainer {
 	
 - ImageResource method getImageAsResponseEntity()
 	- retrieves BinContainer from **HttpSession** via `@SessionAttribute` on a parameter
+	
+### Futher search for bin-packing alternative library
+- Python lib: https://github.com/secnot/rectpack
+	- Can it be run via Jython? http://www.jython.org/jythonbook/en/1.0/JythonAndJavaIntegration.html#using-jython-within-java-applications
+- JavaScript: https://github.com/jakesgordon/bin-packing 
+- Java compiled classes: http://cgi.csc.liv.ac.uk/~epa/surveyhtml.html
+	- possibly use http://jd.benow.ca/
+	- seems like only Strip Packing is implemented there; no rotation
+- Another Java implementation: https://github.com/papuja/2DPackingAlgorithmDemo
+	- seems like only Strip Packing
+- Another Java implementation: https://github.com/Bartvhelvert/Rectangle-packing
+	- no docs
+	- GUI
+	- unclear
