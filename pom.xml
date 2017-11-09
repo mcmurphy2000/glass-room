@@ -134,8 +134,9 @@
 					<!-- you can either create file Procfile in project root and place this 
 						line into it: web: java $JAVA_OPTS ..... OR use the tag below. It seems that 
 						this tag takes preference over Procfile if both are present -->
+					<!-- With -Dspring.profiles.active=heroku Spring will use application-heroku.properties -->
 					<processTypes>
-						<web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/glassroom-0.0.1-SNAPSHOT.jar</web>
+						<web>java $JAVA_OPTS -Dserver.port=$PORT -Dspring.profiles.active=heroku -jar target/glassroom-0.0.1-SNAPSHOT.jar</web>
 					</processTypes>
 				</configuration>
 			</plugin>

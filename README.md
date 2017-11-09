@@ -1,6 +1,6 @@
 # Glass Room Bin Packing
 
-### Starting New Project
+### How this project was started in Eclipse
 - If you're using regular Eclipse instead of Spring STS, install plugins:
 	- Help -> Eclipse Marketplace
 	- Find: Spring
@@ -13,8 +13,7 @@
 	- check Web in Web
 
 ### If you have cloned this project from git	
-- Rename src/main/resources/*.properties-dummy to *.properties
-- Edit application.properties for DB URL, username and password
+- Edit application-local.properties for DB URL, username and password
 - Crate tables manually or set spring.jpa.hibernate.ddl-auto=create
 	- tables `settings` always contains only one row with id=1
 	- table `rect_history` is only used for logging
@@ -25,16 +24,26 @@
 3. Install to local maven repo: `mvn clean install`
 
 ### Compile, run, deploy
-- To compile:
-`mvn clean package`
+- To compile (skipTests is necessary to prevent it connecting to DB, because you're not using any profile here):
+`mvn clean package -DskipTests`
 	
 - To run locally:
-`java -Dserver.port=8090 -jar glassroom-0.0.1-SNAPSHOT.jar`
-or 
-`mvn spring-boot:run`
+`java -Dserver.port=8090 -Dspring.profiles.active=local -jar glassroom-0.0.1-SNAPSHOT.jar`
+OR 
+`mvn spring-boot:run -Drun.jvmArguments="-Dspring.profiles.active=local"`
+	- setting `spring.profiles.active=local` will make Spring use `application-local.properties`
+	- when it is being run on Heroku, heroku-maven-plugin in pom.xml uses this instead: `-Dspring.profiles.active=heroku`
+	- alternatively, you can set OS System Environment variable `SPRING_PROFILES_ACTIVE=local`
+	for more info see:
+	https://docs.spring.io/spring-boot/docs/current/reference/html/howto-properties-and-configuration.html
+	https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-external-config
+	
+- To run in Eclipse:
+	- Run -> Run Configurations... -> Spring Boot App -> <glass-room> -> Spring Boot tab -> Profile = local
+	- OR set system property spring.profiles.active=local
 
 - To deploy:
-`mvn clean heroku:deploy`
+`mvn clean heroku:deploy -DskipTests`
 
 - To see logs:
 `heroku logs --app APP-NAME --num NUMER_OF_LINES`
