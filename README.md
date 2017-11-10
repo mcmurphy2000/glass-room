@@ -83,7 +83,7 @@ interface BinContainer {
 ### Futher search for bin-packing alternative library
 - Python lib: https://github.com/secnot/rectpack
 	- Can it be run via Jython? http://www.jython.org/jythonbook/en/1.0/JythonAndJavaIntegration.html#using-jython-within-java-applications
-- JavaScript: https://github.com/jakesgordon/bin-packing 
+- JavaScript: https://github.com/jakesgordon/bin-packing (also check: https://github.com/bryanburgers/bin-pack , https://www.npmjs.com/package/bin-pack)
 - Java compiled classes: http://cgi.csc.liv.ac.uk/~epa/surveyhtml.html
 	- possibly use http://jd.benow.ca/
 	- seems like only Strip Packing is implemented there; no rotation
@@ -93,3 +93,9 @@ interface BinContainer {
 	- no docs
 	- GUI
 	- unclear
+- Another Java compiled classes: https://www.computational-logistics.org/orlib/topic/Space%20Defragmentation%20for%20Packing%20Problems/index.html
+- Online solver: http://www.packit4me.com/
+- 2D cutting stock problem Java implementations:
+	https://github.com/achaussende/tp-2D-cutting-stock-problem
+	https://github.com/DuncanvR/2dcuttingstock	(uses external lib)
+	https://github.com/Polytech-AdrienCastex/2D-Cutting-Stock-Problem-with-Setup-Cost
