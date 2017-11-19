@@ -93,16 +93,6 @@
 	<build>
 		<plugins>
 
-			<!-- Include spring-boot-maven-plugin if you want to make an executable jar[FAT JAR which 
-                 includes all dependencies along with sprinboot loader] that you can run on 
-                 commandline using java -jar NAME -->
-            <!-- If you are not including it, result would be just a regular jar.
-                 You could run the project using mvn spring-boot:run [on project root directory]-->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			
 			<!-- Include javadoc in final JAR -->
 			<!-- 
 			<plugin>
@@ -123,6 +113,61 @@
 				</executions>
 			</plugin>
 			-->			
+			
+			<!-- Include spring-boot-maven-plugin if you want to make an executable jar[FAT JAR which 
+                 includes all dependencies along with sprinboot loader] that you can run on 
+                 commandline using java -jar NAME -->
+            <!-- If you are not including it, result would be just a regular jar.
+                 You could run the project using mvn spring-boot:run [on project root directory]-->
+			<!--
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			-->
+			
+			<!--
+				Using not-FAT jar and dependency/ folder instead of lib/ folder for dependencies
+				because this way heroku-maven-plugin does not duplicate dependencies and makes the slug.tgz twice smaller
+			-->
+            <!-- The following 2 plugins will enable you to run small (not FAT JAR) JAR using java -jar NAME
+				 You will just need your small JAR and dependency/ folder with all dependencies -->
+            <!-- This will put all dependencies in the target/dependency folder -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- This will configure the Manifest.mf file -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>dependency/</classpathPrefix>
+                            <mainClass>com.sln.glassroom.GlassRoomApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>			
 
 			<!-- Heroku Maven plugin -->
 			<plugin>
