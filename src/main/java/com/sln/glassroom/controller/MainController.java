@@ -23,11 +23,14 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
@@ -189,12 +192,22 @@ public class MainController {
 	// Returning Image/Media Data with Spring MVC
 	// see: http://www.baeldung.com/spring-mvc-image-media-data
 	//
-	// "binContainer" was saved to HttpSession using traditional way, retrieving it using @SessionAttribute 
+	// ResponseEntity is an alternative to @ResponseBody. ResponseEntity is an object that carries metadata (such as headers and the status code)
+	// ResponseEntity implies the semantics of @ResponseBody, so the payload will be rendered into the response body just as if the method were annotated with @ResponseBody.
+	// But you need ResponseEntity if you want to set headers
+	// There’s no need to annotate the method with @ResponseBody if it returns ResponseEntity.
+	// (see 16.3.1 in "Spring in Action 4th Edition" book)
+	//
+	// "binContainer" was saved to HttpSession using traditional way, retrieving it using @SessionAttribute
+	//
+	// If I were not using HttpHeaders I could just return  @ResponseBody byte[] instead of ResponseEntity<byte[]>
+	// (see page 435 in "Spring in Action 4th Edition" book)
 	@RequestMapping(value = "/binimage/{index}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImageAsResponseEntity(@SessionAttribute(value = "binContainer", required = false) BinContainer binContainer, @PathVariable("index") int index) {
 		// page will ask for index from 1 to binCount, but binContainer.getBinImage() is 0 based
 		if (binContainer == null || index < 1 || index > binContainer.getBinCount()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			throw new BinNotFoundException(index); 
 		}
 		
 		// page will ask for index from 1 to binCount, but binContainer.getBinImage() is 0 based
@@ -216,6 +229,24 @@ public class MainController {
 	    ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(imageInByte, headers, HttpStatus.OK);
 	    
 	    return responseEntity;
+	}
+	
+	// see 7.3.2 in "Spring in Action 4th Edition" book
+//	@ExceptionHandler(BinNotFoundException.class)
+//	public String handleBinNotFound() {
+//		return "error";
+//	}
+
+	// Because binNotFound() always returns an Error, the only reason to keep ResponseEntity around is so you can set the status code.
+	// But by annotating binNotFound() with @ResponseStatus(HttpStatus.NOT_FOUND), you can achieve the same effect and get rid of ResponseEntity.
+	// Again, if the controller class is annotated with @RestController, you can remove the @ResponseBody annotation and clean up the code a little more
+	// see page 436 in "Spring in Action 4th Edition" book
+	@ExceptionHandler(BinNotFoundException.class)
+	//public ResponseEntity<Error> binNotFound(BinNotFoundException e) {
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody Error binNotFound(BinNotFoundException e) {
+		int index = e.getIndex();
+		return new Error(4, "Bin [" + index + "] not found");
 	}
 
 }

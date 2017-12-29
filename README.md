@@ -23,6 +23,15 @@
 2. Delete all files in 2D-Bin-Packing\src\main\resources to save space
 3. Install to local maven repo: `mvn clean install`
 
+### Profiles
+- There are 2 profiles in this app: local and heroku
+	Profiles determine which application.properties files will be used
+- Profile examples: http://www.baeldung.com/spring-profiles
+- spring.profiles.default can be used to set default profile
+	- If spring.profiles.active is set (which is being done in Heroku's Maven plugin), then its value determines which profiles are active.
+	- But if spring.profiles.active isn’t set, then Spring looks to spring.profiles.default
+	- When spring.profiles.active is set, it doesn’t matter what spring.profiles.default is set to; the profiles set in spring.profiles.active take precedence.
+
 ### Compile, run, deploy
 - To compile (skipTests is necessary to prevent it connecting to DB, because you're not using any profile here):
 `mvn clean package -DskipTests`
@@ -97,5 +106,7 @@ interface BinContainer {
 - Online solver: http://www.packit4me.com/
 - 2D cutting stock problem Java implementations:
 	https://github.com/achaussende/tp-2D-cutting-stock-problem
-	https://github.com/DuncanvR/2dcuttingstock	(uses external lib)
-	https://github.com/Polytech-AdrienCastex/2D-Cutting-Stock-Problem-with-Setup-Cost
+	https://github.com/DuncanvR/2dcuttingstock	(uses external lib, compiled and run it - sometimes it hangs or takes too long to calculate)
+	https://github.com/Polytech-AdrienCastex/2D-Cutting-Stock-Problem-with-Setup-Cost - output varies, unclear
+- French Web services for the bin packing problem (Java): https://www.isima.fr/~lacomme/ORWebServices/index.php?idx=7
+- A look at 2D bin packing with Optaplanner: https://github.com/MichaelGoff/bin-packing

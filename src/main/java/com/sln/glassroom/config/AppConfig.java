@@ -26,6 +26,8 @@ public class AppConfig {
 	 * Spring will create a proxy to be injected as a dependency, and instantiate the target bean when it is needed in a request.
 	 * @see <a href="http://www.baeldung.com/spring-bean-scopes">http://www.baeldung.com/spring-bean-scopes</a>
 	 * 
+	 * Also read 3.4.1 on page 82 of Craig Walls - Spring in Action 4th Edition
+	 * 
 	 * @return a bean that contains current settings entity
 	 */
 	@Bean
