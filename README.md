@@ -22,6 +22,7 @@
 1. Clone 2D-Bin-Packing (or unpack `2D-Bin-Packing-master.zip`)
 2. Delete all files in 2D-Bin-Packing\src\main\resources to save space
 3. Install to local maven repo: `mvn clean install`
+	- If Maven is giving you JavaDoc error you may need to comment out the maven-javadoc-plugin in pom.xml
 
 ### Profiles
 - There are 2 profiles in this app: local and heroku
