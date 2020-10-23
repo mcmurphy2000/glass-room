@@ -14,7 +14,7 @@
 
 ### If you have cloned this project from git	
 - Edit application-local.properties for DB URL, username and password
-- Crate tables manually or set spring.jpa.hibernate.ddl-auto=create
+- Crate tables manually OR set spring.jpa.hibernate.ddl-auto=create OR run with `docker-compose up -d` which will use `init.sql` to create tables 
 	- tables `settings` always contains only one row with id=1
 	- table `rect_history` is only used for logging
 	

@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-glassroom
+    restart: always
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: sesame
+#      MYSQL_DATABASE: glass_room
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: sesame
+    ports:
+      - 3306:3306
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./init.sql:/data/application/init.sql
